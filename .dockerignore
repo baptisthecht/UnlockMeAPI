@@ -1,0 +1,30 @@
+# Ignore node_modules folder
+
+node_modules
+
+# Ignore build output
+
+dist
+
+# Ignore development files
+
+_.log
+_.env
+.env
+
+# Ignore version control files
+
+.git
+.gitignore
+
+# Ignore editor-specific files
+
+.vscode
+.idea
+_.sublime-project
+_.sublime-workspace
+_.suo
+_.ntvs\*
+_.njsproj
+_.sln
+_.sw_

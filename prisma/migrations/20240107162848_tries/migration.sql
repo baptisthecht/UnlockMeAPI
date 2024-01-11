@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `GameActivity` ADD COLUMN `tries` INTEGER NOT NULL DEFAULT 0;
