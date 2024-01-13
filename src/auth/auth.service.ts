@@ -144,6 +144,7 @@ export class AuthService {
               select: {
                 id: true,
                 url: true,
+                name: true,
                 shareLink: true,
                 createdAt: true,
                 price: true,
@@ -283,6 +284,7 @@ export class AuthService {
         photos: {
           select: {
             id: true,
+            name: true,
             url: true,
             shareLink: true,
             createdAt: true,
