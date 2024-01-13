@@ -113,6 +113,9 @@ export class AuthService {
       where: { email: email },
       include: {
         withdrawals: {
+          orderBy: {
+            createdAt: 'desc',
+          },
           select: {
             id: true,
             createdAt: true,
@@ -123,6 +126,9 @@ export class AuthService {
         },
 
         photos: {
+          orderBy: {
+            createdAt: 'desc',
+          },
           select: {
             id: true,
             url: true,
@@ -135,6 +141,9 @@ export class AuthService {
           },
         },
         sales: {
+          orderBy: {
+            createdAt: 'desc',
+          },
           select: {
             id: true,
             createdAt: true,
