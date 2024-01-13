@@ -51,7 +51,7 @@ export class PhotoService {
     const uploadedPhoto = await this.prismaService.photo.create({
       data: {
         name: uplaodPhotoDto.name,
-        price: uplaodPhotoDto.price,
+        price: +uplaodPhotoDto.price,
         url: `https://uploadme-nestjs.s3.eu-west-3.amazonaws.com/${UniqueFileName}`,
         shareLink: `https://share.me/blabla`,
         priceForSeller: uplaodPhotoDto.price * 0.9,
