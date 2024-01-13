@@ -30,6 +30,6 @@ export class PhotoController {
     )
     file: Express.Multer.File,
   ) {
-    await this.photoService.upload(file.originalname, file.buffer);
+    return this.photoService.upload(file.originalname, file.buffer);
   }
 }
