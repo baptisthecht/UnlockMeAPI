@@ -22,7 +22,7 @@ export class PhotoService {
 
   async upload(fileName: string, fileContent: Buffer) {
     let uuid = uuidv4();
-    let UniqueFileName = fileName + uuid;
+    let UniqueFileName = uuid + fileName;
     try {
       await this.s3Client.send(
         new PutObjectCommand({
@@ -32,11 +32,14 @@ export class PhotoService {
         }),
       );
       return {
-        data: 'Sucessfully uploaded',
+        success: true,
         uploadLink: `https://uploadme-nestjs.s3.eu-west-3.amazonaws.com/${UniqueFileName}`,
       };
     } catch (error) {
-      return 'error';
+      return {
+        success: false,
+        error: error,
+      };
     }
   }
 }
