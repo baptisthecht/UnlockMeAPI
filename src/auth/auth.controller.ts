@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { registerDto } from './dto/register.dto';
 import { loginDto } from './dto/login.dto';
 import { AuthService } from './auth.service';
@@ -58,5 +66,12 @@ export class AuthController {
   ) {
     const userId = request.user['id'];
     return this.authService.deleteAccount(userId, deleteAccountDto);
+  }
+
+  @Get('refresh-data')
+  @UseGuards(AuthGuard('jwt'))
+  refreshData(@Req() request: Request | any) {
+    const userId = request.user['id'];
+    return this.authService.refreshData(userId);
   }
 }

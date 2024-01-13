@@ -265,4 +265,61 @@ export class AuthService {
       data: 'Account deleted successfully',
     };
   }
+
+  async refreshData(userId: any) {
+    const user = await this.prismaService.user.findUnique({
+      where: { id: userId },
+      include: {
+        withdrawals: {
+          select: {
+            id: true,
+            createdAt: true,
+            amount: true,
+            status: true,
+            RIB: true,
+          },
+        },
+
+        photos: {
+          select: {
+            id: true,
+            url: true,
+            shareLink: true,
+            createdAt: true,
+            price: true,
+            priceForSeller: true,
+            sales: true,
+            salesCount: true,
+          },
+        },
+        sales: {
+          select: {
+            id: true,
+            createdAt: true,
+            price: true,
+            priceForSeller: true,
+            photo: {
+              select: {
+                id: true,
+                url: true,
+                shareLink: true,
+                createdAt: true,
+                price: true,
+                priceForSeller: true,
+                sales: true,
+                salesCount: true,
+              },
+            },
+            buyerEmail: true,
+            buyerName: true,
+            status: true,
+          },
+        },
+      },
+    });
+    if (!user) {
+      throw new NotFoundException('Invalid user');
+    }
+    return { success: true, user };
+  }
 }
