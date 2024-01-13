@@ -20,12 +20,19 @@ export class PhotoService {
   }
 
   async upload(fileName: string, fileContent: Buffer) {
-    await this.s3Client.send(
-      new PutObjectCommand({
-        Bucket: 'uploadme-nestjs',
-        Key: fileName,
-        Body: fileContent,
-      }),
-    );
+    await this.s3Client
+      .send(
+        new PutObjectCommand({
+          Bucket: 'uploadme-nestjs',
+          Key: fileName,
+          Body: fileContent,
+        }),
+      )
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => {
+        return err;
+      });
   }
 }
