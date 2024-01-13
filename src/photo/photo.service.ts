@@ -1,6 +1,7 @@
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class PhotoService {
@@ -20,15 +21,20 @@ export class PhotoService {
   }
 
   async upload(fileName: string, fileContent: Buffer) {
+    let uuid = uuidv4();
+    let UniqueFileName = fileName + uuid;
     try {
-      const response = await this.s3Client.send(
+      await this.s3Client.send(
         new PutObjectCommand({
           Bucket: 'uploadme-nestjs',
-          Key: fileName,
+          Key: UniqueFileName,
           Body: fileContent,
         }),
       );
-      return JSON.stringify(response);
+      return {
+        data: 'Sucessfully uploaded',
+        uploadLink: `https://uploadme-nestjs.s3.eu-west-3.amazonaws.com/${UniqueFileName}`,
+      };
     } catch (error) {
       return 'error';
     }
