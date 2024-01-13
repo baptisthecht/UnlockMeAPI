@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MailerModule } from './mailer/mailer.module';
 
 import { HealthModule } from './health/health.module';
+import { PhotoModule } from './photo/photo.module';
 
 @Module({
   imports: [
@@ -12,8 +13,8 @@ import { HealthModule } from './health/health.module';
     AuthModule,
     PrismaModule,
     MailerModule,
-
     HealthModule,
+    PhotoModule,
   ],
 })
 export class AppModule {}
