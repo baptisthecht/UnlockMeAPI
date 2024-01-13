@@ -320,6 +320,10 @@ export class AuthService {
     if (!user) {
       throw new NotFoundException('Invalid user');
     }
-    return { success: true, user };
+    const fieldsToRemove = ['password', 'temp_secret', 'secret'];
+    const userWithoutSensitive = Object.fromEntries(
+      Object.entries(user).filter(([key]) => !fieldsToRemove.includes(key)),
+    );
+    return { success: true, user: userWithoutSensitive };
   }
 }
