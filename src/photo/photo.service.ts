@@ -59,6 +59,15 @@ export class PhotoService {
       },
     });
 
+    await this.prismaService.user.update({
+      where: { id: userId },
+      data: {
+        photosCount: {
+          increment: 1,
+        },
+      },
+    });
+
     return {
       success: true,
       shareLink: uploadedPhoto.shareLink,
