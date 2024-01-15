@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Patch,
   Post,
   Req,
   UseGuards,
@@ -18,6 +19,7 @@ import { deleteAccountDto } from './dto/deleteAccount.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { resendEmailConfirmationDto } from './dto/resendEmailConfirmation.dto';
 import { emailConfirmationDto } from './dto/emailConfirmation.dto';
+import { UpdateUserDto } from './dto/updateUser.dto';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -73,5 +75,12 @@ export class AuthController {
   refreshData(@Req() request: Request | any) {
     const userId = request.user['id'];
     return this.authService.refreshData(userId);
+  }
+
+  @Patch('update-user')
+  @UseGuards(AuthGuard('jwt'))
+  updateUser(@Req() request: Request | any, @Body() body: UpdateUserDto) {
+    const userId = request.user['id'];
+    return this.authService.updateUser(userId, body);
   }
 }

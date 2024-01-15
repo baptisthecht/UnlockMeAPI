@@ -16,6 +16,7 @@ import { JwtService } from '@nestjs/jwt';
 import { resetPasswordDto } from './dto/resetPassword.dto';
 import { resetPasswordConfirmationDto } from './dto/resetPasswordConfirmation.dto';
 import { deleteAccountDto } from './dto/deleteAccount.dto';
+import { UpdateUserDto } from './dto/updateUser.dto';
 
 @Injectable()
 export class AuthService {
@@ -131,6 +132,7 @@ export class AuthService {
           },
           select: {
             id: true,
+            name: true,
             url: true,
             shareLink: true,
             createdAt: true,
@@ -345,5 +347,22 @@ export class AuthService {
       Object.entries(user).filter(([key]) => !fieldsToRemove.includes(key)),
     );
     return { success: true, user: userWithoutSensitive };
+  }
+
+  async updateUser(userId: number, UpdateUserDto: UpdateUserDto) {
+    const { displayName, bio, email } = UpdateUserDto;
+    const user = await this.prismaService.user.findUnique({
+      where: { id: userId },
+    });
+    if (!user) {
+      throw new NotFoundException('Invalid user');
+    }
+    await this.prismaService.user.update({
+      where: { id: userId },
+      data: { displayName: displayName, bio: bio, email: email },
+    });
+    return {
+      data: 'User updated successfully',
+    };
   }
 }
