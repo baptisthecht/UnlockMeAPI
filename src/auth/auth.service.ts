@@ -357,12 +357,13 @@ export class AuthService {
     if (!user) {
       throw new NotFoundException('Invalid user');
     }
-    await this.prismaService.user.update({
+    const updatedUser = await this.prismaService.user.update({
       where: { id: userId },
       data: { displayName: displayName, bio: bio, email: email },
     });
     return {
       data: 'User updated successfully',
+      user: updatedUser,
     };
   }
 }
