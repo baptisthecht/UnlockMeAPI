@@ -379,7 +379,7 @@ export class AuthService {
     if (user.balance < amount) {
       return new ForbiddenException('Insufficient balance');
     }
-    const updatedUser = await this.prismaService.user.update({
+    await this.prismaService.user.update({
       where: { id: userId },
       data: { balance: user.balance - amount },
     });
@@ -388,7 +388,7 @@ export class AuthService {
     });
     return {
       success: true,
-      user: updatedUser,
+      status: 201,
     };
   }
 }
