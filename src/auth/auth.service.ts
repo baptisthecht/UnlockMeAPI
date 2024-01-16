@@ -17,6 +17,7 @@ import { resetPasswordDto } from './dto/resetPassword.dto';
 import { resetPasswordConfirmationDto } from './dto/resetPasswordConfirmation.dto';
 import { deleteAccountDto } from './dto/deleteAccount.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
+import { WithdrawalDto } from './dto/withdrawal.dto';
 
 @Injectable()
 export class AuthService {
@@ -362,7 +363,31 @@ export class AuthService {
       data: { displayName: displayName, bio: bio, email: email },
     });
     return {
-      data: 'User updated successfully',
+      success: true,
+      user: updatedUser,
+    };
+  }
+
+  async withdrawal(userId: number, withdrawalDto: WithdrawalDto) {
+    const { amount, rib } = withdrawalDto;
+    const user = await this.prismaService.user.findUnique({
+      where: { id: userId },
+    });
+    if (!user) {
+      return new NotFoundException('Invalid user');
+    }
+    if (user.balance < amount) {
+      return new ForbiddenException('Insufficient balance');
+    }
+    const updatedUser = await this.prismaService.user.update({
+      where: { id: userId },
+      data: { balance: user.balance - amount },
+    });
+    await this.prismaService.withdrawal.create({
+      data: { amount: amount, RIB: rib, user: { connect: { id: userId } } },
+    });
+    return {
+      success: true,
       user: updatedUser,
     };
   }

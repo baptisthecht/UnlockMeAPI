@@ -20,6 +20,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { resendEmailConfirmationDto } from './dto/resendEmailConfirmation.dto';
 import { emailConfirmationDto } from './dto/emailConfirmation.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
+import { WithdrawalDto } from './dto/withdrawal.dto';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -82,5 +83,15 @@ export class AuthController {
   updateUser(@Req() request: Request | any, @Body() body: UpdateUserDto) {
     const userId = request.user['id'];
     return this.authService.updateUser(userId, body);
+  }
+
+  @Post('withdrawal')
+  @UseGuards(AuthGuard('jwt'))
+  withdrawal(
+    @Req() request: Request | any,
+    @Body() withdrawalDto: WithdrawalDto,
+  ) {
+    const userId = request.user['id'];
+    return this.authService.withdrawal(userId, withdrawalDto);
   }
 }
