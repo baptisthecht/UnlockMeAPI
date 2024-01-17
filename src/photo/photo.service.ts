@@ -1,4 +1,4 @@
-import { NotFound, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import {
   ForbiddenException,
   Injectable,

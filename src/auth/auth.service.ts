@@ -126,7 +126,6 @@ export class AuthService {
             RIB: true,
           },
         },
-
         photos: {
           orderBy: {
             createdAt: 'desc',
