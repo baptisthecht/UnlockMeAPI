@@ -1,9 +1,14 @@
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { Injectable } from '@nestjs/common';
+import { NotFound, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { v4 as uuidv4 } from 'uuid';
 import { uplaodPhotoDto } from './dto/uploadPhoto.dto';
+import { DeletePhotoDto } from './dto/DeletePhoto.dto';
 
 @Injectable()
 export class PhotoService {
@@ -72,6 +77,29 @@ export class PhotoService {
       success: true,
       shareLink: uploadedPhoto.shareLink,
       url: uploadedPhoto.url,
+    };
+  }
+
+  async delete(deletePhotoDto: DeletePhotoDto, userId: any) {
+    const { photoId } = deletePhotoDto;
+    const photo = await this.prismaService.photo.findUnique({
+      where: {
+        id: photoId,
+      },
+    });
+    if (!photo) {
+      return new NotFoundException('Photo not found');
+    }
+    if (photo.userId !== userId) {
+      return new ForbiddenException('User not allowed to delete this photo');
+    }
+    await this.prismaService.photo.delete({
+      where: {
+        id: photoId,
+      },
+    });
+    return {
+      success: true,
     };
   }
 }
