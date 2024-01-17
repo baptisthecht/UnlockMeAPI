@@ -163,7 +163,7 @@ export class AuthService {
                 createdAt: true,
                 price: true,
                 priceForSeller: true,
-                sales: true,
+                sales: false,
                 salesCount: true,
               },
             },
