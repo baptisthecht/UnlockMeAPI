@@ -1,14 +1,16 @@
+// Modules
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import {
   ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { v4 as uuidv4 } from 'uuid';
+// DTOs
+import { uplaodPhotoDto } from './dto/uploadPhoto.dto';
+// Services
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { v4 as uuidv4 } from 'uuid';
-import { uplaodPhotoDto } from './dto/uploadPhoto.dto';
-import { DeletePhotoDto } from './dto/DeletePhoto.dto';
 
 @Injectable()
 export class PhotoService {
@@ -80,8 +82,7 @@ export class PhotoService {
     };
   }
 
-  async delete(deletePhotoDto: DeletePhotoDto, userId: any) {
-    const { photoId } = deletePhotoDto;
+  async delete(photoId: number, userId: any) {
     const photo = await this.prismaService.photo.findUnique({
       where: {
         id: photoId,
@@ -96,6 +97,14 @@ export class PhotoService {
     await this.prismaService.photo.delete({
       where: {
         id: photoId,
+      },
+    });
+    await this.prismaService.user.update({
+      where: { id: userId },
+      data: {
+        photosCount: {
+          decrement: 1,
+        },
       },
     });
     return {

@@ -1,8 +1,8 @@
+// Modules
 import {
   Body,
   Controller,
   Delete,
-  FileTypeValidator,
   Get,
   MaxFileSizeValidator,
   ParseFilePipe,
@@ -12,12 +12,13 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { PhotoService } from './photo.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { uplaodPhotoDto } from './dto/uploadPhoto.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
-import { DeletePhotoDto } from './dto/DeletePhoto.dto';
+// Services
+import { PhotoService } from './photo.service';
+// DTOs
+import { uplaodPhotoDto } from './dto/uploadPhoto.dto';
 
 @Controller('photo')
 export class PhotoController {
@@ -52,11 +53,9 @@ export class PhotoController {
 
   @Delete('delete')
   @UseGuards(AuthGuard('jwt'))
-  async deletePhoto(
-    @Body() deletePhotoDto: DeletePhotoDto,
-    @Req() request: Request | any,
-  ) {
+  async deletePhoto(@Req() request: Request | any) {
     const userId = request.user['id'];
-    return this.photoService.delete(deletePhotoDto, userId);
+    const photoId = request.params.photoId;
+    return this.photoService.delete(photoId, userId);
   }
 }
