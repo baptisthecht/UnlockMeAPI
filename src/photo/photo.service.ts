@@ -39,6 +39,7 @@ export class PhotoService {
     userId: number,
   ) {
     let uuid = uuidv4();
+    let miniUuid = uuid.slice(0, 8);
     let UniqueFileName = uuid + fileName;
     try {
       await this.s3Client.send(
@@ -63,7 +64,7 @@ export class PhotoService {
         shareLink: `https://share.me/blabla`,
         priceForSeller: uplaodPhotoDto.price * 0.9,
         userId: userId,
-        uuid: uuid,
+        uuid: miniUuid,
       },
     });
 
