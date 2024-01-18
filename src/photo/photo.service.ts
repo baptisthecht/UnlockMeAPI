@@ -63,6 +63,7 @@ export class PhotoService {
         shareLink: `https://share.me/blabla`,
         priceForSeller: uplaodPhotoDto.price * 0.9,
         userId: userId,
+        uuid: uuid,
       },
     });
 
@@ -109,6 +110,21 @@ export class PhotoService {
     });
     return {
       success: true,
+    };
+  }
+
+  async getByUuid(uuid: string) {
+    const photo = await this.prismaService.photo.findUnique({
+      where: {
+        uuid: uuid,
+      },
+    });
+    if (!photo) {
+      return new NotFoundException('Photo not found');
+    }
+    return {
+      success: true,
+      photo: photo,
     };
   }
 }

@@ -41,6 +41,7 @@ model Photo {
   user            User              @relation(fields: [userId], references: [id])
   sales           Sale[]
   salesCount      Int               @default(0)
+  uuid            String?            @unique
 }
 
 model Sale {

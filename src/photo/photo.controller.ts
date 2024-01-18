@@ -58,4 +58,10 @@ export class PhotoController {
     const photoId = request.params.photoId;
     return this.photoService.delete(photoId, userId);
   }
+
+  @Get('get')
+  async getPhoto(@Req() request: Request | any) {
+    const photoId = request.params.photoId;
+    return this.photoService.getByUuid(photoId);
+  }
 }
