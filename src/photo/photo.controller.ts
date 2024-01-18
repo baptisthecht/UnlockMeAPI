@@ -60,8 +60,8 @@ export class PhotoController {
     return this.photoService.delete(photoId, userId);
   }
 
-  @Get('get')
-  async getPhoto(@Param('photoId') id: string) {
+  @Get('get/:id')
+  async getPhoto(@Param('id') id: string) {
     return this.photoService.getByUuid(id);
   }
 }
