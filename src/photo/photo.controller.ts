@@ -5,6 +5,7 @@ import {
   Delete,
   Get,
   MaxFileSizeValidator,
+  Param,
   ParseFilePipe,
   Post,
   Req,
@@ -60,8 +61,7 @@ export class PhotoController {
   }
 
   @Get('get')
-  async getPhoto(@Req() request: Request | any) {
-    const photoId = request.params.photoId;
-    return this.photoService.getByUuid(photoId);
+  async getPhoto(@Param('photoId') id: string) {
+    return this.photoService.getByUuid(id);
   }
 }
